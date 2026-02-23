@@ -1,6 +1,7 @@
 package com.dungle939.ecommerce.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +37,20 @@ public class ProductService {
     }
 
     // Get all cart Items
-    public List<CartItem> getCartItems() {
-        return cartItemRepo.findAll();
+    public List<CartItemDTO> getCartItems(boolean isExpandProduct) {
+        List<CartItem> cartItems = cartItemRepo.findAll();
+        return cartItems.stream().map((item) -> {
+            CartItemDTO dto = new CartItemDTO();
+            dto.setProductId(item.getProductId());
+            dto.setQuantity(item.getQuantity());
+            dto.setDeliveryOptionId(item.getDeliveryOptionId());
+
+            if (isExpandProduct) {
+                productRepo.findById(item.getProductId())
+                        .ifPresent(product -> dto.setProduct(product));
+            }
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     // Add a Product to cart
