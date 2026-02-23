@@ -54,7 +54,6 @@ public class ProductController {
         return new ResponseEntity<>(savedProducts, HttpStatus.CREATED);
     }
 
-
     // Get all cart Products
     @GetMapping("/cart-items")
     public ResponseEntity<List<CartItem>> getCartItems() {
@@ -66,10 +65,11 @@ public class ProductController {
     }
 
     // Add a Product to the Cart
-    @PostMapping("/cart-items")
+    @PostMapping("/cart-item")
     public ResponseEntity<CartItem> addCartItem(@RequestBody CartItem cartItem) {
         CartItem savedItem = productService.addCartItem(cartItem);
         return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
     }
 
+    //
 }

@@ -2,7 +2,10 @@ package com.dungle939.ecommerce.models;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -17,7 +20,8 @@ import lombok.NoArgsConstructor;
 public class CartItem {
 
     @Id
-    private String productID;
+    private String productId;
+
     private String deliveryOptionId;
     private Integer quantity;
 
