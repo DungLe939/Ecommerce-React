@@ -5,19 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.dungle939.ecommerce.dtos.CartItemDTO;
 import com.dungle939.ecommerce.dtos.DeliveryOptionDTO;
-import com.dungle939.ecommerce.models.CartItem;
 import com.dungle939.ecommerce.models.DeliveryOption;
-import com.dungle939.ecommerce.models.Product;
+
 import com.dungle939.ecommerce.services.DeliveryOptionService;
 
 @RestController
@@ -40,7 +32,7 @@ public class DeliveryOptionController {
         if (deliveryOptions.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content
         }
-        
+
         return new ResponseEntity<>(deliveryOptions, HttpStatus.OK);
     }
 
