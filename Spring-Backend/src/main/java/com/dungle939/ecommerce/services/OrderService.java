@@ -130,4 +130,30 @@ public class OrderService {
         return orderRepo.save(order);
     }
 
+    public OrderDTO getOrderById(boolean expandProducts, String orderId) {
+        Order order = orderRepo.findById(orderId).orElse(null);
+
+        OrderDTO dto = new OrderDTO();
+        dto.setId(order.getId());
+        dto.setOrderTimeMs(order.getOrderTimeMs());
+        dto.setTotalCostCents(order.getTotalCostCents());
+
+        List<OrderProductDTO> productDTOs = order.getOrderItems().stream().map(item -> {
+            OrderProductDTO itemDto = new OrderProductDTO();
+            itemDto.setProductId(item.getProductId());
+            itemDto.setQuantity(item.getQuantity());
+            itemDto.setEstimatedDeliveryTimeMs(item.getEstimatedDeliveryTimeMs());
+
+            if (expandProducts) {
+                productRepo.findById(item.getProductId())
+                        .ifPresent((product) -> itemDto.setProduct(product));
+            }
+
+            return itemDto;
+        }).collect(Collectors.toList());
+
+        dto.setProducts(productDTOs);
+        return dto;
+    }
+
 }

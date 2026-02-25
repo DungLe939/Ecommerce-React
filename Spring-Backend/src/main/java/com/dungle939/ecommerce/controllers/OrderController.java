@@ -48,4 +48,16 @@ public class OrderController {
         return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
     }
 
+    // Get Tracking of product
+    @GetMapping("/orders/{orderId}")
+    public ResponseEntity<OrderDTO> getOrderById(
+        @PathVariable String orderId,
+        @RequestParam(required = false, defaultValue = "false") String expand
+    ) {
+        boolean expandProducts = "products".equals(expand);
+
+        OrderDTO orders = orderService.getOrderById(expandProducts, orderId);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
 }
