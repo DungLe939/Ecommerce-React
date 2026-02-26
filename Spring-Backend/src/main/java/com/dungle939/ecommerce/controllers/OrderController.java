@@ -11,7 +11,6 @@ import com.dungle939.ecommerce.dtos.CreateOrderRequestDTO;
 import com.dungle939.ecommerce.dtos.OrderDTO;
 import com.dungle939.ecommerce.dtos.PaymentSummaryDTO;
 import com.dungle939.ecommerce.models.Order;
-import com.dungle939.ecommerce.models.Product;
 import com.dungle939.ecommerce.services.OrderService;
 
 import jakarta.validation.Valid;
