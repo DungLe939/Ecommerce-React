@@ -39,7 +39,13 @@ public class CartItemService {
 
     // Add a Product to cart
     public CartItem addCartItem(CartItem cartItem) {
-        return cartItemRepo.save(cartItem);
+        return cartItemRepo
+                .findById(cartItem.getProductId())
+                .map((existingItem) -> {
+                    existingItem.setQuantity(existingItem.getQuantity() + cartItem.getQuantity());
+                    return cartItemRepo.save(existingItem);
+                })
+                .orElseGet(() -> cartItemRepo.save(cartItem));
     }
 
     // Update item to Cart
