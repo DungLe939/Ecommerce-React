@@ -7,13 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dungle939.ecommerce.dtos.CartItemDTO;
+import com.dungle939.ecommerce.dtos.UpdateCartItemDTO;
 import com.dungle939.ecommerce.models.CartItem;
 import com.dungle939.ecommerce.services.CartItemService;
 
@@ -42,6 +45,13 @@ public class CartItemController {
     public ResponseEntity<CartItem> addCartItem(@RequestBody CartItem cartItem) {
         CartItem savedItem = cartItemService.addCartItem(cartItem);
         return new ResponseEntity<>(savedItem, HttpStatus.CREATED);
+    }
+
+    // Updtae a Product in the cart
+    @PutMapping("/cart-item/{productId}")
+    public ResponseEntity<CartItem> updateCartItem(@PathVariable String productId, @RequestBody UpdateCartItemDTO updateCartItemDTO) {
+        CartItem updatedItem = cartItemService.updateCartItem(productId, updateCartItemDTO);
+        return new ResponseEntity<>(updatedItem, HttpStatus.CREATED);
     }
 
 }

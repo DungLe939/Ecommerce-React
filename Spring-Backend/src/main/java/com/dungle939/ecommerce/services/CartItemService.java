@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dungle939.ecommerce.dtos.CartItemDTO;
+import com.dungle939.ecommerce.dtos.UpdateCartItemDTO;
 import com.dungle939.ecommerce.models.CartItem;
 import com.dungle939.ecommerce.repos.CartItemRepo;
 import com.dungle939.ecommerce.repos.ProductRepo;
@@ -48,8 +49,13 @@ public class CartItemService {
                 .orElseGet(() -> cartItemRepo.save(cartItem));
     }
 
-    // Update item to Cart
-    public CartItem updateCartItem(CartItem cartItem) {
-        return cartItemRepo.save(cartItem);
+    // Update the item
+    public CartItem updateCartItem(String productId, UpdateCartItemDTO updateCartItemDTO) {
+        CartItem existingItem = cartItemRepo.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Cart item not found: " + productId));
+
+        existingItem.setQuantity(updateCartItemDTO.getQuantity());
+        existingItem.setDeliveryOptionId(updateCartItemDTO.getDeliveryOptionId());
+        return cartItemRepo.save(existingItem);
     }
 }
