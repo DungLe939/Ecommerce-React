@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,10 +49,18 @@ public class CartItemController {
     }
 
     // Updtae a Product in the cart
-    @PutMapping("/cart-item/{productId}")
-    public ResponseEntity<CartItem> updateCartItem(@PathVariable String productId, @RequestBody UpdateCartItemDTO updateCartItemDTO) {
+    @PutMapping("/cart-items/{productId}")
+    public ResponseEntity<CartItem> updateCartItem(@PathVariable String productId,
+            @RequestBody UpdateCartItemDTO updateCartItemDTO) {
         CartItem updatedItem = cartItemService.updateCartItem(productId, updateCartItemDTO);
         return new ResponseEntity<>(updatedItem, HttpStatus.CREATED);
+    }
+
+    // Delete the product by Id
+    @DeleteMapping("/cart-items/{productId}")
+    public ResponseEntity<Void> deleteCartItem(@PathVariable String productId) {
+        cartItemService.deleteCartItem(productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

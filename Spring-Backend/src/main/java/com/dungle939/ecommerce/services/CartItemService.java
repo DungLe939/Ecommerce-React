@@ -58,4 +58,11 @@ public class CartItemService {
         existingItem.setDeliveryOptionId(updateCartItemDTO.getDeliveryOptionId());
         return cartItemRepo.save(existingItem);
     }
+
+    // Delete a cart item
+    public void deleteCartItem(String productId) {
+        cartItemRepo.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Cart item not found: " + productId));
+        cartItemRepo.deleteById(productId);
+    }
 }
