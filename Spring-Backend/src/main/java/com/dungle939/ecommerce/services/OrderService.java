@@ -17,6 +17,7 @@ import com.dungle939.ecommerce.models.DeliveryOption;
 import com.dungle939.ecommerce.models.Order;
 import com.dungle939.ecommerce.models.OrderItem;
 import com.dungle939.ecommerce.models.Product;
+import com.dungle939.ecommerce.repos.CartItemRepo;
 import com.dungle939.ecommerce.repos.DeliveryOptionsRepo;
 import com.dungle939.ecommerce.repos.OrderRepo;
 import com.dungle939.ecommerce.repos.ProductRepo;
@@ -35,6 +36,9 @@ public class OrderService {
 
     @Autowired
     private ProductRepo productRepo;
+
+    @Autowired
+    private CartItemRepo cartItemRepo;
 
     public PaymentSummaryDTO getPaymentSummary() {
         PaymentSummaryDTO newPayment = new PaymentSummaryDTO();
@@ -127,7 +131,12 @@ public class OrderService {
 
         // 4. Set list
         order.setOrderItems(orderItems);
-        return orderRepo.save(order);
+        Order savedOrder = orderRepo.save(order);
+
+        // 5. Clear cart after placing order
+        cartItemRepo.deleteAll();
+
+        return savedOrder;
     }
 
     public OrderDTO getOrderById(boolean expandProducts, String orderId) {

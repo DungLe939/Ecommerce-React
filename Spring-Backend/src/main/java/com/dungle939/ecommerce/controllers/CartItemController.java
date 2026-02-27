@@ -23,7 +23,7 @@ import com.dungle939.ecommerce.services.CartItemService;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin
+@CrossOrigin(origins = "${frontend.url}")
 public class CartItemController {
 
     @Autowired
@@ -61,6 +61,13 @@ public class CartItemController {
     public ResponseEntity<Void> deleteCartItem(@PathVariable String productId) {
         cartItemService.deleteCartItem(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Reset all cart items
+    @PostMapping("/reset")
+    public ResponseEntity<Void> resetCart() {
+        cartItemService.resetCart();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

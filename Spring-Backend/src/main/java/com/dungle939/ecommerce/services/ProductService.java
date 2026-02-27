@@ -19,6 +19,11 @@ public class ProductService {
         return productRepo.findAll();
     }
 
+    // Search products by name
+    public List<Product> searchProducts(String search) {
+        return productRepo.searchByNameOrKeyword(search);
+    }
+
     // Add a Product
     public Product addProduct(Product product) {
         return productRepo.save(product);

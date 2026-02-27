@@ -14,7 +14,7 @@ import com.dungle939.ecommerce.services.DeliveryOptionService;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin
+@CrossOrigin(origins = "${frontend.url}")
 public class DeliveryOptionController {
 
     @Autowired

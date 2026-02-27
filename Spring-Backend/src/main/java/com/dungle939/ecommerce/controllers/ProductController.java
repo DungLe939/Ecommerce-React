@@ -12,16 +12,22 @@ import com.dungle939.ecommerce.services.ProductService;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin
+@CrossOrigin(origins = "${frontend.url}")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    // Get all Products
+    // Get all Products (with optional search)
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
+    public ResponseEntity<List<Product>> getAllProducts(
+            @RequestParam(required = false) String search) {
+        List<Product> products;
+        if (search != null && !search.isEmpty()) {
+            products = productService.searchProducts(search);
+        } else {
+            products = productService.getAllProducts();
+        }
         if (products.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content
         }

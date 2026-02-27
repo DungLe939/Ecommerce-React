@@ -65,4 +65,9 @@ public class CartItemService {
                 .orElseThrow(() -> new RuntimeException("Cart item not found: " + productId));
         cartItemRepo.deleteById(productId);
     }
+
+    // Reset all cart items
+    public void resetCart() {
+        cartItemRepo.deleteAll();
+    }
 }
