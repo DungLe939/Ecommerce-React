@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dungle939.ecommerce.dtos.CartItemDTO;
 import com.dungle939.ecommerce.dtos.CreateOrderItemDTO;
@@ -25,6 +26,7 @@ import com.dungle939.ecommerce.repos.OrderRepo;
 import com.dungle939.ecommerce.repos.ProductRepo;
 
 @Service
+@Transactional
 public class OrderService {
 
     @Autowired
@@ -205,6 +207,13 @@ public class OrderService {
 
         dto.setProducts(productDTOs);
         return dto;
+    }
+
+    // New Delete Order method
+    public void deleteOrder(String orderId) {
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found: " + orderId));
+        orderRepo.delete(order);
     }
 
 }
