@@ -1,6 +1,8 @@
 package com.dungle939.ecommerce.services;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.dungle939.ecommerce.dtos.CartItemDTO;
 import com.dungle939.ecommerce.dtos.UpdateCartItemDTO;
 import com.dungle939.ecommerce.models.CartItem;
+import com.dungle939.ecommerce.models.Product;
 import com.dungle939.ecommerce.repos.CartItemRepo;
 import com.dungle939.ecommerce.repos.ProductRepo;
 
@@ -24,6 +27,18 @@ public class CartItemService {
     // Get all cart Items
     public List<CartItemDTO> getCartItems(boolean isExpandProduct) {
         List<CartItem> cartItems = cartItemRepo.findAll();
+
+        // Batch load all products in 1 query instead of N queries
+        Map<String, Product> productMap = Map.of();
+        if (isExpandProduct && !cartItems.isEmpty()) {
+            List<String> productIds = cartItems.stream()
+                    .map(CartItem::getProductId)
+                    .collect(Collectors.toList());
+            productMap = productRepo.findAllById(productIds).stream()
+                    .collect(Collectors.toMap(Product::getId, Function.identity()));
+        }
+
+        final Map<String, Product> finalProductMap = productMap;
         return cartItems.stream().map((item) -> {
             CartItemDTO dto = new CartItemDTO();
             dto.setProductId(item.getProductId());
@@ -31,8 +46,10 @@ public class CartItemService {
             dto.setDeliveryOptionId(item.getDeliveryOptionId());
 
             if (isExpandProduct) {
-                productRepo.findById(item.getProductId())
-                        .ifPresent(product -> dto.setProduct(product));
+                Product product = finalProductMap.get(item.getProductId());
+                if (product != null) {
+                    dto.setProduct(product);
+                }
             }
             return dto;
         }).collect(Collectors.toList());

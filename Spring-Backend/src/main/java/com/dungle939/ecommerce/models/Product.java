@@ -3,11 +3,14 @@ package com.dungle939.ecommerce.models;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.BatchSize;
+
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,9 +38,10 @@ public class Product {
     @Embedded
     private ProductRating rating;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "product_keywords",
         joinColumns = @JoinColumn(name = "product_id"))
+    @BatchSize(size = 50)
     List<String> keywords;
 
     private Date createdAt;

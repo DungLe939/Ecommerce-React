@@ -1,9 +1,6 @@
 package com.dungle939.ecommerce.models;
 
-import java.util.Date;
 import java.util.List;
-
-import com.dungle939.ecommerce.dtos.CartItemDTO;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
